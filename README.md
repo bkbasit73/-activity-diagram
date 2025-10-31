@@ -1,10 +1,9 @@
-```mermaid
 flowchart TD
 
     %% ========= BANK CUSTOMER SWIMLANE ========= %%
     subgraph Customer["Bank Customer"]
         A([Start]) --> B[Insert Card]
-        B --> C[Enter Personal Identification Number (PIN)]
+        B --> C[Enter PIN]
         C --> I[Take Card]
         I --> J([End])
     end
