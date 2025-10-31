@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
 
     %% ========= BANK CUSTOMER SWIMLANE ========= %%
