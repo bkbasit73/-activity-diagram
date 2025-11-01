@@ -1,41 +1,39 @@
+# 🏦 Bank ATM Activity Diagram (UML)
+
+This project demonstrates a **UML Activity Diagram** for a **Bank ATM System** using Mermaid syntax.  
+The diagram shows the interaction between the **Bank Customer** and the **ATM System** — including card validation, PIN verification, transaction handling, and balance inquiry.
+
+---
+
+## 💻 Diagram Code
+
 ```mermaid
 flowchart TD
 
     %% ===================== SWIMLANES ===================== %%
-    %% We fake swimlanes using subgraphs (GitHub Mermaid allows this)
     subgraph Customer["Bank Customer"]
         start([Start]) --> insertCard[Insert Card]
         insertCard --> enterPIN[Enter PIN]
     end
 
     subgraph ATM["ATM System"]
-        %% verify PIN after customer enters it
         enterPIN --> decision{Valid PIN?}
 
         %% ---------- VALID PIN PATH ----------
-        decision -->|Yes| readCard[Read and validate card]
-
-        %% after successful validation, go to transaction flow
-        readCard --> showMenu[Display transaction menu]
-        showMenu --> showBalance[Display account balance]
-
-        %% user may do more transactions
-        showBalance --> another{Another transaction?}
+        decision -->|Yes| readCard[Read and Validate Card]
+        readCard --> showMenu[Display Transaction Menu]
+        showMenu --> showBalance[Display Account Balance]
+        showBalance --> another{Another Transaction?}
         another -->|Yes| showMenu
-
-        %% if no more transactions → return card
-        another -->|No| returnCard[Return card]
+        another -->|No| returnCard[Return Card]
     end
 
     %% ---------- INVALID PIN PATH ----------
-    decision -->|No| prompt[Prompt for PIN again]
-    prompt --> showMenu
-    %% note: to model 3 attempts in code, we add a note label
-    prompt -. "3 attempts max" .- decision
+    decision -->|No| prompt[Prompt for PIN Again]
+    prompt -. "3 Attempts Max" .- decision
 
     %% ========== ENDING ==========
-    %% card goes back to customer
-    returnCard --> takeCard[Take card]
+    returnCard --> takeCard[Take Card]
     takeCard --> end([End])
 
     %% ========== OPTIONAL STYLING ==========
