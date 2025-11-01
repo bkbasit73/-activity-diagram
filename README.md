@@ -1,28 +1,34 @@
+## ATM Activity Diagram
+
 ```mermaid
 flowchart TD
 
-    %% ===================== SWIMLANES ===================== %%
+    %% ============ BANK CUSTOMER ============ %%
     subgraph Customer["Bank Customer"]
-        start([Start]) --> insertCard[Insert Card]
-        insertCard --> enterPIN[Enter PIN]
+        start([Start]) --> insert[Insert Card]
+        insert --> enter[Enter PIN]
     end
 
+    %% ============ ATM SYSTEM ============ %%
     subgraph ATM["ATM System"]
-        enterPIN --> decision{Valid PIN?}
+        enter --> dec{Valid PIN?}
 
-        %% ---------- VALID PIN PATH ----------
-        decision -->|Yes| readCard[Read and Validate Card]
-        readCard --> showMenu[Display Transaction Menu]
-        showMenu --> showBalance[Display Account Balance]
-        showBalance --> another{Another Transaction?}
-        another -->|Yes| showMenu
-        another -->|No| returnCard[Return Card]
+        %% ----- YES PATH (correct PIN) -----
+        dec -->|Yes| read[Read and validate card]
+        read --> menu[Display transaction menu]
+        menu --> balance[Display account balance]
+        balance --> again{Another transaction?}
+        again -->|Yes| menu
+
+        %% ----- NO PATH (wrong PIN) -----
+        dec -->|No| prompt[Prompt for PIN again]
+        %% loop for 3 attempts
+        prompt -. "3 attempts max" .- enter
+
+        %% ----- FINISH -----
+        again -->|No| return[Return Card]
     end
 
-    %% ---------- INVALID PIN PATH ----------
-    decision -->|No| prompt[Prompt for PIN Again]
-    prompt -. "3 Attempts Max" .- decision
-
-    %% ========== ENDING ==========
-    returnCard --> takeCard[Take Card]
-    takeCard --> endNode([End])
+    %% back to customer to take card and end
+    return --> take[Take Card]
+    take --> stop([End])
