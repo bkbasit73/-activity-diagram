@@ -6,29 +6,24 @@ flowchart TD
     %% ============ BANK CUSTOMER ============ %%
     subgraph Customer["Bank Customer"]
         start([Start]) --> insert[Insert Card]
-        insert --> enter[Enter PIN]
+        insert --> enter[Enter Card]
+        enter --> dec{Valid PIN?}
     end
 
     %% ============ ATM SYSTEM ============ %%
     subgraph ATM["ATM System"]
-        enter --> dec{Valid PIN?}
-
-        %% ----- YES PATH (correct PIN) -----
-        dec -->|Yes| read[Read and validate card]
-        read --> menu[Display transaction menu]
-        menu --> balance[Display account balance]
-        balance --> again{Another transaction?}
+        dec -->|Yes| read[Read and Validate Card]
+        read --> return[Return Card]
+        dec -->|No| prompt[Prompt Attempt Try]
+        prompt --> menu[Display Transaction Menu]
+        menu --> balance[Display Account Balance]
+        balance --> again{Another Transaction?}
         again -->|Yes| menu
-
-        %% ----- NO PATH (wrong PIN) -----
-        dec -->|No| prompt[Prompt for PIN again]
-        %% loop for 3 attempts
-        prompt -. "3 attempts max" .- enter
-
-        %% ----- FINISH -----
-        again -->|No| return[Return Card]
+        again -->|No| take[Take Card]
     end
 
-    %% back to customer to take card and end
-    return --> take[Take Card]
+    %% extra connector for 3 attempts
+    prompt -. "3 Attempts" .- dec
+
+    %% ending flow
     take --> stop([End])
