@@ -1,12 +1,3 @@
-# 🏦 Bank ATM Activity Diagram (UML)
-
-This project demonstrates a **UML Activity Diagram** for a **Bank ATM System** using Mermaid syntax.  
-The diagram shows the interaction between the **Bank Customer** and the **ATM System** — including card validation, PIN verification, transaction handling, and balance inquiry.
-
----
-
-## 💻 Diagram Code
-
 ```mermaid
 flowchart TD
 
@@ -34,10 +25,4 @@ flowchart TD
 
     %% ========== ENDING ==========
     returnCard --> takeCard[Take Card]
-    takeCard --> end([End])
-
-    %% ========== OPTIONAL STYLING ==========
-    classDef customer fill:#e3f2fd,stroke:#90caf9,stroke-width:1px;
-    classDef atm fill:#fff8e1,stroke:#ffecb3,stroke-width:1px;
-    class insertCard,enterPIN,takeCard,start,end customer;
-    class decision,readCard,showMenu,showBalance,another,prompt,returnCard atm;
+    takeCard --> endNode([End])
